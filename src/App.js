@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import ParticlesBg from "particles-bg";
 import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 import Navigation from "./components/Navigation/Navigation";
-import Signin from "./components/Signin/Signin";
-import Register from "./components/Register/Register";
+import Signin2 from "./components/Signin/Signin2";
+import Register2 from "./components/Register/Register2";
 import Logo from "./components/Logo/Logo";
 import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
 import Rank from "./components/Rank/Rank";
@@ -13,7 +13,7 @@ const initialState = {
   input: "",
   imageUrl: "",
   box: {},
-  route: "home",
+  route: "signin",
   isSignedIn: false,
   user: {
     id: "",
@@ -43,11 +43,11 @@ class App extends Component {
   };
 
   calculateFaceLocation = (data) => {
-    console.log(data, "wat is data");
+    // to do - error handling here
     const clarifaiFace =
       data.outputs[0].data.regions[0].region_info.bounding_box;
     const image = document.getElementById("inputimage");
-    console.log(image, "what is image");
+
     const width = Number(image.width);
     const height = Number(image.height);
     return {
@@ -69,8 +69,8 @@ class App extends Component {
     this.setState({ input: event.target.value });
   };
   returnRequestionOptions = (imageUrl) => {
-    const PAT = "b9cf207b96614247ac44ebd79e6b3328";
-    const USER_ID = "clarifai";
+    const PAT = process.env.REACT_APP_CLARIFAI_PAT;
+    const USER_ID = process.env.REACT_APP_CLARIFAI_USERID;
     const APP_ID = "main";
     const raw = JSON.stringify({
       user_app_id: {
@@ -108,7 +108,23 @@ class App extends Component {
       this.returnRequestionOptions(this.state.input)
     )
       .then((response) => response.json())
-      .then((result) => this.displayFaceBox(this.calculateFaceLocation(result)))
+      .then((result) => {
+        if (result.status.code === 10000) {
+          fetch("http://localhost:3001/image", {
+            method: "put",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              userId: this.state.user.id,
+            }),
+          })
+            .then((res) => res.json())
+            .then((count) =>
+              this.setState({ user: { ...this.state.user, entries: count } })
+            );
+        }
+
+        this.displayFaceBox(this.calculateFaceLocation(result));
+      })
       .catch((error) => console.log("nooo error", error));
   };
 
@@ -175,9 +191,12 @@ class App extends Component {
             <FaceRecognition box={box} imageUrl={input} />
           </div>
         ) : route === "signin" ? (
-          <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
+          <Signin2
+            loadUser={this.loadUser}
+            onRouteChange={this.onRouteChange}
+          />
         ) : (
-          <Register
+          <Register2
             loadUser={this.loadUser}
             onRouteChange={this.onRouteChange}
           />
