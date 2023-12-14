@@ -1,3 +1,4 @@
+// to do - clear user date on sign out
 const Navigation = ({ onRouteChange, isSignedIn }) => {
   if (isSignedIn) {
     return (

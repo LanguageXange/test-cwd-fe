@@ -24,12 +24,16 @@ const Signin2 = ({ onRouteChange, loadUser }) => {
       }),
     })
       .then((response) => response.json())
-      .then((user) => {
-        if (user.id) {
-          loadUser(user);
+      .then((data) => {
+        if (data.error) {
+          alert(data.message);
+        }
+        if (data.id) {
+          loadUser(data);
           onRouteChange("home");
         }
-      });
+      })
+      .catch((err) => console.log(err));
   };
 
   return (

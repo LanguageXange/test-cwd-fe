@@ -169,9 +169,22 @@ class App extends Component {
 
   render() {
     const { isSignedIn, imageUrl, route, input, box } = this.state;
+    let config = {
+      num: [4, 10],
+      rps: 0.8,
+      radius: [5, 30],
+      life: [1.5, 3],
+      v: [0.2, 0.3],
+      tha: [-40, 40],
+      alpha: [0.6, 0],
+      scale: [1, 0.1],
+      position: "all", // all or center or {x:1,y:1,width:100,height:100}
+      random: 10, // or null,
+      g: 0.1, // gravity
+    };
     return (
       <div className="App">
-        {/* <ParticlesBg type="circle" bg={true} /> */}
+        {/* <ParticlesBg type="custom" bg={true} config={config} /> */}
         <Navigation
           isSignedIn={isSignedIn}
           onRouteChange={this.onRouteChange}
