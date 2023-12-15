@@ -25,7 +25,7 @@ const Signin2 = ({ onRouteChange, loadUser }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.error) {
+        if (data.hasError) {
           alert(data.message);
         }
         if (data.id) {

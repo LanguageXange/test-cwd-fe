@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import ParticlesBg from "particles-bg";
 import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 import Navigation from "./components/Navigation/Navigation";
-import Signin2 from "./components/Signin/Signin2"; // convert to functional component
-import Register2 from "./components/Register/Register2"; // convert to functional component
+import Signin2 from "./components/Signin/Signin2";
+import Register2 from "./components/Register/Register2";
 import Logo from "./components/Logo/Logo";
 import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
 import Rank from "./components/Rank/Rank";
@@ -11,29 +11,30 @@ import "./App.css";
 // https://samples.clarifai.com/metro-north.jpg
 // https://samples.clarifai.com/BarackObama.jpg
 
-// separate user state from other
-const appInitialState = {
+// issue - when users sign in - the state was reset in onRouteChange
+// to fix the issue - we should separate the state see `App2.js`
+const initialState = {
   input: "",
   imageUrl: "",
   box: {},
   route: "signin",
+  isSignedIn: false,
+  user: {
+    id: "",
+    name: "",
+    email: "",
+    entries: 0,
+    joined: "",
+  },
 };
 
-const userInitialState = {
-  id: "",
-  name: "",
-  email: "",
-  entries: 0,
-};
-
-function WorkingApp() {
-  const [appInfo, setAppInfo] = useState(appInitialState);
-  const [userInfo, setUserInfo] = useState(userInitialState);
-  // destructure
-  const { input, box, route } = appInfo;
-  const isSignedIn = userInfo.name.length > 0; // simply check if there is a user name
+function App() {
+  const [info, setInfo] = useState(initialState);
+  console.log("app renders, what is info", info);
+  const { input, box, route, isSignedIn, user } = info;
   const loadUser = (userData) => {
-    setUserInfo({ ...userInfo, ...userData });
+    console.log(userData, "what is userdata");
+    setInfo({ ...info, user: { ...userData } });
   };
   const calculateFaceLocation = (data) => {
     const clarifaiFace =
@@ -51,19 +52,17 @@ function WorkingApp() {
   };
 
   const displayFaceBox = (box) => {
-    setAppInfo({ ...appInfo, box: box });
+    setInfo({ ...info, box: box });
   };
 
   const onInputChange = (event) => {
-    // on input change clear the border box
-    setAppInfo({ ...appInfo, box: {}, input: event.target.value });
+    if (box) {
+      setInfo({ ...info, box: {} });
+    }
+    setInfo({ ...info, input: event.target.value });
   };
 
   const onButtonSubmit = () => {
-    if (!input) {
-      alert("please provide image url");
-      return; // don't call the api
-    }
     fetch("http://localhost:3001/imageurl", {
       method: "post",
       headers: { "Content-Type": "application/json" },
@@ -78,11 +77,13 @@ function WorkingApp() {
             method: "put",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              userId: userInfo.id,
+              userId: user.id,
             }),
           })
             .then((res) => res.json())
-            .then((count) => setUserInfo({ ...userInfo, entries: count }));
+            .then((count) =>
+              setInfo(...user, { user: { ...user, entries: count } })
+            );
         }
 
         displayFaceBox(calculateFaceLocation(result));
@@ -92,23 +93,24 @@ function WorkingApp() {
 
   const onRouteChange = (route) => {
     if (route === "signout") {
-      setAppInfo(appInitialState); // reset app state
-      setUserInfo(userInitialState); // sign user out
+      setInfo(initialState);
+    } else if (route === "home") {
+      setInfo({ ...info, isSignedIn: true, route }); // this line resets the user state because info is the initial state
     } else {
-      setAppInfo({ ...appInfo, route });
+      setInfo({ ...info, isSignedIn: false, route });
     }
   };
 
   return (
     <div className="App">
-      <h1>I'm App2 - issue fixed </h1>
+      <h1>I'm App1 functional component </h1>
       <ParticlesBg type="circle" bg={true} />
       <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} />
 
       {route === "home" ? (
         <div>
           <Logo />
-          <Rank name={userInfo.name} entries={userInfo.entries} />
+          <Rank name={user.name} entries={user.entries} />
           <ImageLinkForm
             onInputChange={onInputChange}
             onButtonSubmit={onButtonSubmit}
@@ -124,4 +126,4 @@ function WorkingApp() {
   );
 }
 
-export default WorkingApp;
+export default App;
