@@ -4,7 +4,6 @@ import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 import Navigation from "./components/Navigation/Navigation";
 import Signin2 from "./components/Signin/Signin2"; // convert to functional component
 import Register2 from "./components/Register/Register2"; // convert to functional component
-import Logo from "./components/Logo/Logo";
 import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
 import Rank from "./components/Rank/Rank";
 import "./App.css";
@@ -16,7 +15,7 @@ const appInitialState = {
   input: "",
   imageUrl: "",
   box: {},
-  route: "signin",
+  route: "home",
 };
 
 const userInitialState = {
@@ -107,7 +106,6 @@ function WorkingApp() {
 
       {route === "home" ? (
         <div>
-          <Logo />
           <Rank name={userInfo.name} entries={userInfo.entries} />
           <ImageLinkForm
             onInputChange={onInputChange}

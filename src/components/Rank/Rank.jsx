@@ -1,10 +1,10 @@
 const Rank = ({ name, entries }) => {
   return (
     <div>
-      <div className="white f3">
+      <div>
         Hello! {`${name.toUpperCase()}, your current entry count is...`}
       </div>
-      <div className="white f1">{entries}</div>
+      <div>{entries}</div>
     </div>
   );
 };

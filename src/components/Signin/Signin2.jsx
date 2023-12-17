@@ -37,19 +37,14 @@ const Signin2 = ({ onRouteChange, loadUser }) => {
   };
 
   return (
-    <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
-      <main className="pa4 black-80">
+    <article className="center">
+      <main>
         <form onSubmit={handleSubmit}>
-          <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
-            <legend className="f1 fw6 ph0 mh0">
-              Sign In 2 functional component
-            </legend>
-            <div className="mt3">
-              <label className="db fw6 lh-copy f6" htmlFor="email">
-                Email
-              </label>
+          <fieldset id="sign_up">
+            <legend>Sign In 2 functional component</legend>
+            <div>
+              <label htmlFor="email">Email</label>
               <input
-                className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                 type="email"
                 name="signInEmail"
                 id="email"
@@ -57,12 +52,9 @@ const Signin2 = ({ onRouteChange, loadUser }) => {
                 onChange={handleChange}
               />
             </div>
-            <div className="mv3">
-              <label className="db fw6 lh-copy f6" htmlFor="password">
-                Password
-              </label>
+            <div>
+              <label htmlFor="password">Password</label>
               <input
-                className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                 type="password"
                 required
                 name="signInPassword"
@@ -71,10 +63,10 @@ const Signin2 = ({ onRouteChange, loadUser }) => {
               />
             </div>
           </fieldset>
-          <div className="">
+          <div>
             <button type="submit">Sign in</button>
           </div>
-          <div className="lh-copy mt3">
+          <div>
             <button type="button" onClick={() => onRouteChange("register")}>
               Register
             </button>

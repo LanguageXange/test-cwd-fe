@@ -4,7 +4,7 @@ import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 import Navigation from "./components/Navigation/Navigation";
 import Signin2 from "./components/Signin/Signin2";
 import Register2 from "./components/Register/Register2";
-import Logo from "./components/Logo/Logo";
+
 import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
 import Rank from "./components/Rank/Rank";
 import "./App.css";
@@ -133,7 +133,6 @@ class App extends Component {
 
         {route === "home" ? (
           <div>
-            <Logo />
             <Rank
               name={this.state.user.name}
               entries={this.state.user.entries}
