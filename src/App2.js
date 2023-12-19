@@ -15,7 +15,7 @@ const appInitialState = {
   input: "",
   imageUrl: "",
   box: {},
-  route: "home",
+  route: "signin",
 };
 
 const userInitialState = {
