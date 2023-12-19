@@ -63,7 +63,7 @@ function WorkingApp() {
       alert("please provide image url");
       return; // don't call the api
     }
-    fetch("http://localhost:3001/imageurl", {
+    fetch("https://cwd-refactor-backend.onrender.com/imageurl", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -73,7 +73,7 @@ function WorkingApp() {
       .then((response) => response.json())
       .then((result) => {
         if (result.status.code === 10000) {
-          fetch("http://localhost:3001/image", {
+          fetch("https://cwd-refactor-backend.onrender.com/image", {
             method: "put",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

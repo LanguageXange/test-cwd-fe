@@ -14,7 +14,7 @@ const Register2 = ({ loadUser, onRouteChange }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch("http://localhost:3001/register", {
+    fetch("https://cwd-refactor-backend.onrender.com/register", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
